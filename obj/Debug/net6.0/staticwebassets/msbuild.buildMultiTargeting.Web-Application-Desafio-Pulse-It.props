@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Web-Application-Desafio-Pulse-It.props" />
+</Project>
