@@ -44,6 +44,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Nico/source/repos/Web-Application-Desafio-Pulse-It/Views/Invitacion/Aceptar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52aXRhY2lvblxBY2VwdGFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Nico/source/repos/Web-Application-Desafio-Pulse-It/Views/Invitacion/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52aXRhY2lvblxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -62,6 +66,18 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Nico/source/repos/Web-Application-Desafio-Pulse-It/Views/Invitacion/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52aXRhY2lvblxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Nico/source/repos/Web-Application-Desafio-Pulse-It/Views/Invitacion/Rechazar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52aXRhY2lvblxSZWNoYXphci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Nico/source/repos/Web-Application-Desafio-Pulse-It/Views/Invitacion/Respondido.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52aXRhY2lvblxSZXNwb25kaWRvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Nico/source/repos/Web-Application-Desafio-Pulse-It/Views/Invitacion/Respuesta.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52aXRhY2lvblxSZXNwdWVzdGEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Nico/source/repos/Web-Application-Desafio-Pulse-It/Views/Shared/Error.cshtml]

@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Web_Application_Desafio_Pulse_It.Models;
+using Web_Application_Desafio_Pulse_It.Services;
+using Web_Application_Desafio_Pulse_It.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<DesafioContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("conexion")));
 
+
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+builder.Services.AddTransient<IMailService, MailService>();
 
 var app = builder.Build();
 

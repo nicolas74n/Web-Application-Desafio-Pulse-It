@@ -80,7 +80,7 @@ namespace Web_Application_Desafio_Pulse_It.Controllers
             {
                 return NotFound();
             }
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "Id", evento.UsuarioId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "NombreCompleto", evento.UsuarioId);
             return View(evento);
         }
 

@@ -1,0 +1,41 @@
+﻿@model Web_Application_Desafio_Pulse_It.Models.Invitacion
+
+@{
+    ViewData["Title"] = "Respuesta";
+}
+
+<h1>Respuesta de invitación</h1>
+
+<div>
+    <h4>Invitación</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class = "col-sm-10">
+           @if (Model.Email == null)
+                    {
+                        @Html.DisplayFor(modelItem => Model.UsuarioInvitado.Email)
+                    }else{
+                @Html.DisplayFor(modelItem => Model.Email)
+                    }
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.InvitacionEvento.Titulo)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.InvitacionEvento.Titulo)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UsuarioInvitado)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UsuarioInvitado.NombreCompleto)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Aceptar" asp-route-id="@Model.Id" class="btn btn-primary">Aceptar</a> |
+    <a asp-action="Rechazar" asp-route-id="@Model.Id" class="btn btn-danger">Rechazar</a>
+</div>

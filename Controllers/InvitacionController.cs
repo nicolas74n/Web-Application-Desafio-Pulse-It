@@ -6,16 +6,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Web_Application_Desafio_Pulse_It.Models;
+using Web_Application_Desafio_Pulse_It.Services;
 
 namespace Web_Application_Desafio_Pulse_It.Controllers
 {
     public class InvitacionController : Controller
     {
         private readonly DesafioContext _context;
+        private readonly IMailService _mailService;
 
-        public InvitacionController(DesafioContext context)
+        public InvitacionController(DesafioContext context, IMailService mailService)
         {
             _context = context;
+            _mailService = mailService;
         }
 
         // GET: Invitacion
@@ -46,16 +49,121 @@ namespace Web_Application_Desafio_Pulse_It.Controllers
             return View(invitacion);
         }
 
+        // GET: Invitacion/Respuesta/5
+        public async Task<IActionResult> Respuesta(int? id)
+        {
+            if (id == null || _context.Invitacions == null)
+            {
+                return NotFound();
+            }
+
+            var invitacion = await _context.Invitacions
+                .Include(i => i.EstadoInvitacion)
+                .Include(i => i.InvitacionEvento)
+                .Include(i => i.UsuarioInvitado)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (invitacion == null)
+            {
+                return NotFound();
+            }
+            if(invitacion.EstadoInvitacionId != 1)
+            {
+                return View("Respondido", invitacion);
+            }
+
+            return View(invitacion);
+        }
+
+        // GET: Invitacion/Respuesta/Aceptar/5
+        public async Task<IActionResult> Aceptar(int? id)
+        {
+            if (id == null || _context.Invitacions == null)
+            {
+                return NotFound();
+            }
+
+            var invitacion = await _context.Invitacions
+                .Include(i => i.EstadoInvitacion)
+                .Include(i => i.InvitacionEvento)
+                .Include(i => i.UsuarioInvitado)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (invitacion == null)
+            {
+                return NotFound();
+            }
+
+
+            try
+            {
+                invitacion.EstadoInvitacionId = 2;
+                _context.Update(invitacion);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!InvitacionExists(invitacion.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return View(invitacion);
+        }
+
+        // GET: Invitacion/Respuesta/Rechazar/5
+        public async Task<IActionResult> Rechazar(int? id)
+        {
+            if (id == null || _context.Invitacions == null)
+            {
+                return NotFound();
+            }
+
+            var invitacion = await _context.Invitacions
+                .Include(i => i.EstadoInvitacion)
+                .Include(i => i.InvitacionEvento)
+                .Include(i => i.UsuarioInvitado)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (invitacion == null)
+            {
+                return NotFound();
+            }
+
+
+            try
+            {
+                invitacion.EstadoInvitacionId = 3;
+                _context.Update(invitacion);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!InvitacionExists(invitacion.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return View(invitacion);
+        }
+
         // GET: Invitacion/Create
         public IActionResult Create()
         {
-            List<Usuario> usuarios = new List<Usuario>();
-            usuarios.AddRange(_context.Usuarios);
+           // List<Usuario> usuarios = new List<Usuario>();
+           // usuarios.AddRange(_context.Usuarios);
 
-            usuarios.Add(new Usuario { Id = -1, Nombre = "Usuario Sin Cuenta", Apellido = " "});
+           // usuarios.Add(new Usuario { Id = -1, Nombre = "Usuario Sin Cuenta", Apellido = " "});
 
             ViewData["InvitacionEventoId"] = new SelectList(_context.Eventos, "Id", "Titulo");
-            ViewData["UsuarioInvitadoId"] = new SelectList(usuarios, "Id", "NombreCompleto");
+            ViewData["UsuarioInvitadoId"] = new SelectList(_context.Usuarios, "Id", "NombreCompleto");
             return View();
         }
 
@@ -69,13 +177,33 @@ namespace Web_Application_Desafio_Pulse_It.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(invitacion);
-                await _context.SaveChangesAsync();
+                 await _context.SaveChangesAsync();
+                var evento = await _context.Eventos.FirstOrDefaultAsync(m => m.Id == invitacion.InvitacionEventoId);
+                sendMail(invitacion, evento.Titulo);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["EstadoInvitacionId"] = new SelectList(_context.EstadoInvitacions, "Id", "Id", invitacion.EstadoInvitacionId);
             ViewData["InvitacionEventoId"] = new SelectList(_context.Eventos, "Id", "Id", invitacion.InvitacionEventoId);
             ViewData["UsuarioInvitadoId"] = new SelectList(_context.Usuarios, "Id", "Id", invitacion.UsuarioInvitadoId);
             return View(invitacion);
+        }
+
+        public async void sendMail(Invitacion invitacion, string titulo)
+        {
+            string email;
+            if (invitacion.Email != null)
+            {
+                email = invitacion.Email;
+            }
+            else
+            {
+                var usuario = await _context.Usuarios
+            .FirstOrDefaultAsync(m => m.Id == invitacion.UsuarioInvitadoId);
+                email = usuario.Email;
+            }
+            string subject = "Te han invitado a: " +titulo;
+            string body = "Te han invitado a: " + titulo+ "\n\n\n para responder ingresa al siguiente enlace: \n https://localhost:7270/Invitacion/Respuesta/"+invitacion.Id;
+            _mailService.SendEmailAsync(new MailRequest(email, subject, body));
         }
 
         // GET: Invitacion/Edit/5

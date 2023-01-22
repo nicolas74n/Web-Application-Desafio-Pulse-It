@@ -1,0 +1,16 @@
+﻿@model Web_Application_Desafio_Pulse_It.Models.Invitacion
+
+@{
+    ViewData["Title"] = "Respuesta";
+}
+
+<h1>Respuesta de invitación</h1>
+
+<div>
+    <h4>Invitación</h4>
+    <hr />
+    <div>
+        <h1>Ya has respondido la invitación para: @Html.DisplayFor(model => model.InvitacionEvento.Titulo)</h1>
+    </div>
+</div>
+
